@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎙️ AI Radio · 小克电台</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>AI RADIO</h1>
+      <span class="tag">小克电台 · live</span>
+    </div>
+    <div class="topbar-right">
+      <div class="status" id="status">待机中</div>
+      <div class="user-area" id="userArea">
+        <button id="loginBtn" class="btn-secondary">登录网易云</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 登录二维码弹窗 -->
+  <div class="modal" id="loginModal" style="display:none">
+    <div class="modal-content">
+      <h2>扫码登录网易云</h2>
+      <p class="modal-hint">打开网易云音乐 APP，扫描下方二维码</p>
+      <div class="qr-wrap" id="qrWrap"><div class="loading">加载中...</div></div>
+      <p class="qr-status" id="qrStatus">等待扫描...</p>
+      <button class="btn-secondary" id="loginCancel">取消</button>
+    </div>
+  </div>
+
+  <main class="layout">
+    <!-- 左侧：当前播放 -->
+    <section class="now-playing">
+      <div class="cover-wrap">
+        <img id="cover" src="" alt="" />
+        <div class="cover-placeholder" id="coverPlaceholder">♪</div>
+      </div>
+      <div class="meta">
+        <div class="song-name" id="songName">还没开始</div>
+        <div class="song-artist" id="songArtist">搜索一首歌或让 AI 推荐</div>
+      </div>
+
+      <div class="dj-box" id="djBox">
+        <div class="dj-label">📻 小克在说</div>
+        <div class="dj-text" id="djText">—</div>
+      </div>
+
+      <div class="lyric-box" id="lyricBox">
+        <div class="lyric-prev"></div>
+        <div class="lyric-cur">—</div>
+        <div class="lyric-next"></div>
+      </div>
+
+      <!-- 控制条 -->
+      <div class="controls">
+        <button id="prevBtn" title="上一首">⏮</button>
+        <button id="playBtn" title="播放/暂停">▶</button>
+        <button id="nextBtn" title="下一首">⏭</button>
+        <div class="progress">
+          <span id="curTime">0:00</span>
+          <input type="range" id="progressBar" min="0" max="100" value="0" />
+          <span id="totalTime">0:00</span>
+        </div>
+        <input type="range" id="volumeBar" min="0" max="100" value="80" title="音量" />
+      </div>
+    </section>
+
+    <!-- 右侧：搜索/推荐/队列 -->
+    <aside class="sidebar">
+      <div class="tabs">
+        <button class="tab active" data-tab="queue">播放队列</button>
+        <button class="tab" data-tab="mylist">我的歌单</button>
+        <button class="tab" data-tab="search">搜索</button>
+        <button class="tab" data-tab="ai">AI 推荐</button>
+      </div>
+
+      <div class="tab-pane active" id="pane-queue">
+        <div class="queue-actions">
+          <button id="loadHotBtn" class="btn-secondary">载入热歌榜</button>
+          <button id="clearQueueBtn" class="btn-secondary">清空</button>
+        </div>
+        <ul class="song-list" id="queueList"></ul>
+      </div>
+
+      <div class="tab-pane" id="pane-mylist">
+        <div class="mylist-header" id="mylistHeader">
+          <div class="loading">请先登录网易云账号</div>
+        </div>
+        <ul class="playlist-list" id="playlistList"></ul>
+        <ul class="song-list" id="playlistTracks" style="display:none"></ul>
+      </div>
+
+      <div class="tab-pane" id="pane-search">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="输入歌名/歌手..." />
+          <button id="searchBtn">搜索</button>
+        </div>
+        <ul class="song-list" id="searchList"></ul>
+      </div>
+
+      <div class="tab-pane" id="pane-ai">
+        <div class="ai-box">
+          <textarea id="aiPrompt" placeholder="描述一下你想听什么，例如：&#10;深夜独处时的英文慢歌&#10;周杰伦风格的华语流行&#10;适合写代码的纯音乐"></textarea>
+          <button id="aiBtn">让小克推荐</button>
+        </div>
+        <ul class="song-list" id="aiList"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <audio id="audioPlayer"></audio>
+  <audio id="djPlayer"></audio>
+
+  <script src="/app.js"></script>
+</body>
+</html>
